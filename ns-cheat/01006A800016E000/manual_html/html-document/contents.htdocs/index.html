@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height,user-scalable=no" />
+    <meta name="focus-ring-visibility" content="hidden" />
+    <title>ARCadia</title>
+    <link id="font-stylesheet" rel="stylesheet" href="./help/css/font.css" />
+    <link rel="stylesheet" href="./help/css/common.css" />
+    <link rel="stylesheet" href="./help/css/abstract.css" />
+
+
+    <link rel="stylesheet" href="common.css">
+    <link rel="stylesheet" href="arcadia.css">
+
+    <script type="text/javascript" src="./help/js/jquery-3.3.1.min.js"></script>
+    <script src="./jquery.marquee.min.js" type="text/javascript"></script>
+    <script src="./pagination.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="common.js"></script>
+    <script type="text/javascript" src="arcadia.js"></script>
+</head>
+
+<body>
+    <div id="bg"></div>
+
+    <div id="submenu">
+        <div id="inner-submenu">
+            <div style="margin: 20px;">
+                <table style="width: 100%;">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h3>Category:</h3>
+                                <div id="filters">
+                                    <div>
+                                        <input type="checkbox" id="Fighter">
+                                        <label for="Fighter">Fighter</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="Stage">
+                                        <label for="Stage">Stage</label>
+                                    </div>
+
+                                    <div>
+                                        <input type="checkbox" id="Effects">
+                                        <label for="Effects">Effects</label>
+                                    </div>
+
+                                    <div>
+                                        <input type="checkbox" id="UI">
+                                        <label for="UI">UI</label>
+                                    </div>
+
+                                    <div>
+                                        <input type="checkbox" id="Param">
+                                        <label for="Param">Param</label>
+                                    </div>
+
+                                    <div>
+                                        <input type="checkbox" id="Audio">
+                                        <label for="Audio">Audio</label>
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="Misc">
+                                        <label for="Misc">Misc</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <br />
+                                <h3>Sorting Options:</h3>
+                                <select id="sortOptions">
+                                    <option value="alphabetical">Alphabetical</option>
+                                    <option value="enabled">Enabled</option>
+                                    <option value="disabled">Disabled</option>
+                                </select>
+                                <input type="checkbox" id="desc" onclick="updateSort();">
+                                <label for="desc">Descending</label>
+                                <br />
+                                <br />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button class="submenu-btn" onclick="setAllState(true, this);">Enable All</button>
+                                <button class="submenu-btn" onclick="setAllState(false, this);">Disable All</button>
+                                <br />
+                                <br />
+                                <button class="submenu-btn" onclick="updateCurrentModsWCategories(); setCurrentModsState(true, this);">Enable All in selected categories</button>
+                                <button class="submenu-btn" onclick="updateCurrentModsWCategories(); setCurrentModsState(false, this);">Disable All in selected categories</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <h2 id="modsCount">{} mods</h2>
+                <h2 id="activeModsCount">{} active mods</h2>
+                <h2 id="modSize">{} of mods enabled</h2>
+            </div>
+        </div>
+    </div>
+    <div id="footer">
+        <h3 style='font-family: Arial, Helvetica, sans-serif; margin-right: 10px;'>&#xe000 Toggle Mod &nbsp; &#xe003 Show Submenu <span id="r-stick-desc-icon" style="margin-left: 10px; visibility: hidden;">&nbsp; &#xE102</h3>
+    </div>
+
+    <div id="header">
+        <span class="background-clip"></span>
+            <div>
+                <a id="ret-button" tabindex="-1" nx-se-disabled="">
+                    <div class="ret-icon-wrapper">
+                        <div class="ret-icon-shadow svg-container" ref="./help/img/icon/m_retnormal.svg"></div>
+                        <div class="ret-icon svg-container" ref="./help/img/icon/m_retnormal.svg"></div>
+                    </div>
+                </a>
+                <div class="breadcrumb-list f-u-bold">
+                    <p><span data-msgcom="true" data-msgid="textbox_id-10002" style="
+              color: #02A7D4;
+              -webkit-text-stroke-width: 2px;
+              -webkit-text-stroke-color: black;
+              z-index: 1;">Mods</span></p>
+                    <span data-msgid="textbox_id-2" style="
+            color: #797979;
+            -webkit-text-stroke-width: 2px;
+            -webkit-text-stroke-color: black;">▶</span>
+                    <p><span data-msgcom="true" data-msgid="textbox_id-10002" style="
+              color: white;
+              -webkit-text-stroke-width: 2px;
+              -webkit-text-stroke-color: black;
+              z-index: 1;" id="workspace">Ultimate</span></p>
+                </div>
+            </div>
+    </div>
+
+    <table class="main">
+        <tr>
+            <td>
+                <br>
+                <div id="category_mover">
+                    <span style="text-align: left;">&#xe0e4;</span>
+                    <span style="text-align: center;" id="pageInfo"></span>
+                    <span style="text-align: right">&#xe0e5;</span>
+                </div>
+                <div class="scrollbar" id="left-stick-home">
+                    <div class="l-sidebar">
+                        <div class="l-sidebar-content" id="mods">
+
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <br>
+                <div id="about-mods" class="l-main-content">
+                    <div class="l-screen-shot-wrapper" id="about-img">
+                        <div class="screen-shot-wrapper">
+                            <img id="preview" width="463" height="249" class="screen-shot video is-appear" src="missing.webp" onerror="this.src = 'missing.webp';" />
+                        </div>
+                    </div>
+                    <div class="l-info">
+                        <div class="f-b-bold">
+                            <p class="sentence">Version: <span id="version" data-msgid="textbox_id-5"></span></p>
+                        </div>
+                    </div>
+                    <div class="l-info" style="margin-bottom: 32px;">
+                        <div class="f-b-bold">
+                            <p class="sentence">Authors: <span id="authors" data-msgid="textbox_id-5"></span></p>
+                        </div>
+                    </div>
+                    <div class="l-description scrollbar-desc">
+                        <div class="f-b-bold">
+                            <p id="description" class="sentence p-desc">Description</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div id="r-stick-desc-icon">
+                    <span>&#xE102</span>
+                </div> -->
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</body>
+
+</html>

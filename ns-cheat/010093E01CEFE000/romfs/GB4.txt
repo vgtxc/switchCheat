@@ -1,0 +1,3 @@
+0 = 60 patch
+1 = all shop gundam
+2 = AI difficulty
